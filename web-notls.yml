@@ -1,3 +1,5 @@
+---
+
 - name: nginx server with no TLS settings
   hosts: webservers
   become: True

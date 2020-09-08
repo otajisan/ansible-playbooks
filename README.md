@@ -117,7 +117,7 @@ my-server | CHANGED | rc=0 >>
 
 ### execute Playbook
 
-```
+```bash
 $ ansible-playbook web-notls.yml
 PLAY [nginx server with no TLS settings] ************************************************************************************************************************************************
 
@@ -143,7 +143,35 @@ PLAY RECAP *********************************************************************
 my-server                  : ok=6    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-```
+```bash
 $ curl http://localhost:8080
 <p>Hello Ansible</p>⏎ 
+```
+
+# Nginx
+
+## TLS
+
+### make TLS certificates
+
+```bash
+$ cd nginx
+$ openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -subj /CN=localhost -keyout nginx.key -out nginx.crt
+```
+
+```bash
+$ ansible-playbook web-tls.yml
+```
+
+### test connection
+maybe error found because of self TLS certificates, but that's ok.
+
+```bash
+$ curl https://localhost:8443
+curl: (60) SSL certificate problem: self signed certificate
+More details here: https://curl.haxx.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
 ```
